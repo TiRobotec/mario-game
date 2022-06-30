@@ -1,3 +1,5 @@
+import platform from './img/platform.png'
+
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
@@ -42,7 +44,7 @@ class Player {
 }
 
 class Platform {
-    constructor({ x, y }) {
+    constructor({ x, y, image }) {
         this.position = {
             x,
             y
@@ -50,17 +52,22 @@ class Platform {
 
         this.width = 200
         this.height = 20
+
+        this.image = image
     }
 
     draw() {
-        c.fillStyle = 'blue'
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
-
+        c.drawImage(this.image, this.position.x, this.position.y)
     }
 }
 
+const image = new Image()
+image.src = platform
+
 const player = new Player()
-const platforms = [new Platform({x: 200, y: 100}), new Platform({x: 500, y: 200})]
+const platforms = [
+    new Platform({x: 200, y: 100, image: image}), 
+    new Platform({x: 500, y: 200, image: image})]
 
 const keys = {
     right: {
@@ -78,8 +85,6 @@ player.draw()
 c.clearRect(0, 0, canvas.width, canvas.height)
 
 player.velocity.y += gravity
-
-
 
 function animate() {
     requestAnimationFrame(animate)
